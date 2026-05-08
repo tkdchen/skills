@@ -1,0 +1,77 @@
+{
+  "skill_name": "list-python-package-dependencies",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I need to check what dependencies django version 4.2.0 has. Can you list them for me?",
+      "expected_output": "Should download django 4.2.0 sdist, extract PKG-INFO, and list all dependencies with version specifiers and environment markers",
+      "files": [],
+      "assertions": [
+        {
+          "name": "lists_asgiref",
+          "description": "Output should list asgiref as a dependency"
+        },
+        {
+          "name": "lists_sqlparse",
+          "description": "Output should list sqlparse as a dependency"
+        },
+        {
+          "name": "includes_version_constraints",
+          "description": "Dependencies should include version specifiers (e.g., >=3.6.0)"
+        },
+        {
+          "name": "lists_multiple_dependencies",
+          "description": "Should list at least 2 base dependencies"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "What does the latest version of requests depend on?",
+      "expected_output": "Should download the latest requests sdist, extract PKG-INFO, and list all dependencies",
+      "files": [],
+      "assertions": [
+        {
+          "name": "lists_charset_normalizer",
+          "description": "Output should list charset_normalizer as a dependency"
+        },
+        {
+          "name": "lists_urllib3",
+          "description": "Output should list urllib3 as a dependency"
+        },
+        {
+          "name": "lists_certifi",
+          "description": "Output should list certifi as a dependency"
+        },
+        {
+          "name": "lists_at_least_4_deps",
+          "description": "Should list at least 4 dependencies"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Can you show me the dependencies for flask==2.3.0 and click==8.1.0?",
+      "expected_output": "Should process both packages, downloading each sdist, extracting PKG-INFO, and showing dependencies for each package separately",
+      "files": [],
+      "assertions": [
+        {
+          "name": "lists_both_packages",
+          "description": "Output should include dependencies for both flask and click"
+        },
+        {
+          "name": "lists_werkzeug",
+          "description": "Should list Werkzeug as a flask dependency"
+        },
+        {
+          "name": "lists_jinja2",
+          "description": "Should list Jinja2 as a flask dependency"
+        },
+        {
+          "name": "separates_packages",
+          "description": "Should clearly separate or label dependencies for each package"
+        }
+      ]
+    }
+  ]
+}
