@@ -11,6 +11,10 @@ This skill retrieves and displays the dependencies of Python packages from PyPI 
 
 Downloading the sdist and reading PKG-INFO directly from the package metadata is the most reliable way to get accurate dependency information. This avoids inconsistencies that can occur when relying on PyPI's API or web scraping, and ensures you're seeing exactly what the package declares in its distribution metadata.
 
+## Available scripts
+
+- **`scripts/list-deps.py`** — List dependencies for a given Python package.
+
 ## Input Format
 
 Accept a single package specification:
@@ -22,7 +26,7 @@ Accept a single package specification:
 Run commands:
 
 ```bash
-python3 scripts/list-deps.py <package spec> --format yaml --strip-markers
+python3 scripts/list-deps.py --strip-markers "$PACKAGE_SPEC"
 ```
 
 Example output:
@@ -37,12 +41,18 @@ bcrypt
 If ask to exclude specific extras, pass `-e` to the script:
 
 ```bash
-python3 scripts/list-deps.py <package spec> --format yaml --strip-markers -e <extra name1> <extra name2> ...
+python3 scripts/list-deps.py "$PACKAGE_SPEC" --format yaml --strip-markers -e "$EXTRA_NAME1" "$EXTRA_NAME2" ...
 ```
 
 ## Output
 
 Output the command output directly without change and summarization.
+
+## Customize the script output
+
+- To group the dependencies by extras, pass argument `--group`.
+- To output in a specific structured format, pass argument `--format`, `json` and `yaml` are supported.
+- To keep markers from inside the package spec, remove argument `--strip-markers` from command.
 
 ## Error Handling
 

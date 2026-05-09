@@ -59,39 +59,46 @@ def list_dependencies(package_spec: str, exclude_extras: list[str] | None = None
 class FlatView:
 
     def __init__(self, data: list[str], writer=None, strip_markers=False) -> None:
-        self._data = data
+        if strip_markers:
+            self._data = [item.split(";")[0].rstrip() for item in data]
+        else:
+            self._data = data
         self._writer = writer or sys.stdout
 
     def as_normal(self):
         writer = self._writer
         for item in self._data:
-            print(item.split(";")[0], file=writer)
+            print(item, file=writer)
 
     def as_json(self):
-        json.dump([item.split(";")[0] for item in self._data], self._writer)
+        json.dump(self._data, self._writer)
 
     def as_yaml(self):
         for item in self._data:
-            print("-", item.split(";")[0], file=self._writer)
+            print("-", item, file=self._writer)
 
 
 class GroupView:
 
-    def __init__(self, data: list[str], writer = None) -> None:
+    def __init__(self, data: list[str], writer=None, strip_markers=False) -> None:
         self._data = data
         self._writer = writer or sys.stdout
+        self._strip_markers = strip_markers
         # extra name -> package spec
         self._groups: dict[str, list[str]] = {"base": []}
         self._group_package_specs()
 
     def _group_package_specs(self) -> None:
         for item in self._data:
+            if self._strip_markers:
+                s = item.split(";")[0].rstrip()
+            else:
+                s = item
             if match := re.search(r"extra == \"([-\w]+)\"", item):
                 key = match.group(1)
-                package_spec = item.split(";")[0]
-                self._groups.setdefault(key, []).append(package_spec)
+                self._groups.setdefault(key, []).append(s)
             else:
-                self._groups["base"].append(item)
+                self._groups["base"].append(s)
 
     def as_normal(self):
         writer = self._writer
@@ -136,9 +143,9 @@ def main():
         sys.exit(1)
 
     if args.group_extras:
-        view = GroupView(list(deps))
+        view = GroupView(list(deps), strip_markers=args.strip_markers)
     else:
-        view = FlatView(list(deps))
+        view = FlatView(list(deps), strip_markers=args.strip_markers)
 
     match args.format:
         case "json":
