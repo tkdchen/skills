@@ -44,9 +44,9 @@ koji latest-build <release> <package-without-py>
 
 ## Common Mistakes
 
-- Trying wildcards, `list-pkgs`, or `search` → Use only `latest-build`
-- Wrong order → Always python-, python3-, bare, then py-removal fallback
-- >6 attempts → 3 for regular, 6 max for py-prefixed packages
+- Use only `latest-build`
+- Always python-, python3-, bare, then py-removal fallback
+- Only 3 attempts for regular, 6 max for py-prefixed packages
 
 ## Example
 
