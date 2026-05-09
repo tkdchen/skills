@@ -13,4 +13,3 @@ This repository contains skills and scripts used by myself during daily technica
 
 - [ ] When create a new skill, it should have tests.
 - [ ] Every `SKILL.md` should contain less than 100 lines.
-- [ ] Every skill must have `README.md`.
