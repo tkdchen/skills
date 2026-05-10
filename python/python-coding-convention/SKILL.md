@@ -1,6 +1,6 @@
 ---
 name: python-coding-convention
-description: Python coding skill for writing, refactoring, and organizing Python code. Use when the user asks to write Python scripts, create Python functions, or work with Python code.
+description: Use when writing, refactoring, or organizing Python code. Enforces conventions for docstrings (Sphinx-style), type annotations (builtin generics not typing imports), logging (not print), error handling (exceptions to main not sys.exit in helpers). Triggers on Python scripts, modules, CLI tools, or mentions of style, conventions, formatting, flake8, black.
 ---
 
 # Coding Conventions
@@ -11,7 +11,26 @@ Prefer sphinx-style docstring.
 
 Docstring describes method and class itself, arguments, return value and exceptions. Don't include examples code.
 
-Docstring must also describe the types of arguments and return value.
+Docstring must also describe the types of arguments and return value. Prefer `type` field line. Example:
+
+```python
+def send_message(sender: str, recipient: str, message_body: str, priority: int | None = None) -> int:
+    """Send a message to a recipient
+
+    :param sender: The person sending the message
+    :type sender: str
+    :param recipient: The recipient of the message
+    :type recipient: str
+    :param message_body: The body of the message
+    :type message_body: str
+    :param priority: The priority of the message, can be a number 1-5
+    :type priority: int | None
+    :return: The message id
+    :rtype: int
+    :raises ValueError: if the message_body exceeds 160 characters
+    :raises TypeError: if the message_body is not a str
+    """
+```
 
 Always annotate types, arguments and return value.
 
@@ -70,3 +89,7 @@ Prefer using `logging` module to calling `print()`.
             logger.error(...)
         ...
     ```
+
+## References
+
+- [Sphinx Python Domain - Info fields](https://www.sphinx-doc.org/en/master/usage/domains/python.html#info-field-lists)
