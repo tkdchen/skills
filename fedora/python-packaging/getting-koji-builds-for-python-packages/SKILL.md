@@ -1,61 +1,70 @@
 ---
 name: getting-koji-builds-for-python-packages
-description: Use when asked to get the latest RPM build for a Python package from koji, especially in Fedora packaging contexts
+description: Use when ask to get the latest RPM build for a Python package from koji.
 ---
 
-# Getting Koji Builds for Python Packages
+# Overview
 
-## Overview
+Query the corresponding latest RPM package build from Koji build system for a given Python package.
 
-Python packages in Fedora use "python-" or "python3-" prefixes. Try prefixes in order, then bare name. If all fail and name starts with "py", remove it and retry.
+The Python package is given by a name, a PyPI name generally, and with or without specifier and markers.
 
-**Core principle:** Strip extras first (e.g., `PyJWT[crypto]` → `PyJWT`), then try python-, python3-, bare name. For py-prefixed packages, try again without "py". Stop at 6 attempts max.
+# Name conversion
 
-## Process
+Run this script to convert the names.
 
-```bash
-# Step 0: Strip extras if present (PyJWT[crypto] → PyJWT)
-# Remove [...] and everything inside
+```python
+import sys
+from packaging.requirements import Requirement
 
-# Standard 3-step (all packages)
-koji latest-build <release> python-<package>
-koji latest-build <release> python3-<package>
-koji latest-build <release> <package>
+"""Convert PyPI name to a list of RPM package candidate names"""
 
-# If all fail AND package starts with "py", remove "py" and repeat
-koji latest-build <release> python-<package-without-py>
-koji latest-build <release> python3-<package-without-py>
-koji latest-build <release> <package-without-py>
+pypi_name = sys.argv[1]
+r = Requirement(pypi_name)
+name = r.name
+if name.lower() == "django":
+    majors = (6, 5)
+    for m in majors:
+        print(f"python-django{m}")
+if name.lower() == "pyyaml":
+    print("PyYAML")
+else:
+    print("python-" + name)
+    print("python3-" + name)
+    print("python-" + name.removeprefix("py"))
 ```
 
-**Stop at first match or after 6 attempts.** Release tags: rawhide, f45, f44, etc.
+# Query latest build from Koji
 
-**Examples:** requests → python-requests, PyJWT[crypto] → python-jwt, pycparser → python-pycparser
+Run this script which reads the candidate package names from a file.
 
-## Special Cases
-
-**Django with version:** "django 5" → `python-django5`, "django 6" → `python-django6`. Without version, use standard process.
-
-## Rules
-
-**Do:** Try python-, python3-, bare name. If all fail and starts with "py", remove it and repeat. Stop at first match.
-
-**Don't:** Use wildcards, `koji list-pkgs`, `koji search`, guess version numbers, or try >6 attempts.
-
-## Common Mistakes
-
-- Use only `latest-build`
-- Always python-, python3-, bare, then py-removal fallback
-- Only 3 attempts for regular, 6 max for py-prefixed packages
-
-## Example
-
-**PyJWT[crypto] (extras + py-removal):**
 ```bash
-# Strip extras: PyJWT[crypto] → PyJWT
-koji latest-build rawhide python-pyjwt    # Not found
-koji latest-build rawhide python3-pyjwt   # Not found
-koji latest-build rawhide pyjwt           # Not found
-# Starts with "py", remove it
-koji latest-build rawhide python-jwt      # Found ✓
+while read -r candidate_name
+do
+    printf "Checking candidate package name: %s\n" "$candidate_name" >&2
+    found=true
+    for rel in <release>; do
+        build_info=$(koji latest-build --quiet "$rel" "$candidate_name")
+        printf "%s" "$build_info"
+        if [[ -z "$build_info" ]]; then
+            found=false
+            break
+        fi
+    done
+    if [[ "$found" == true ]]; then
+        break
+    fi
+done <"$candidate_package_names_file"
 ```
+
+`<release>` is expanded to current supported Fedora releases.
+
+# Process
+
+- Run the Python script to get candidate package names.
+- Write them into a file.
+- Run the Bash script to query the latest RPM build.
+
+# Reference
+
+- Package - [Requirements](https://packaging.pypa.io/en/stable/requirements.html)
