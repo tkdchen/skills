@@ -1,0 +1,29 @@
+{
+  "skill_name": "query-koji-builds-for-python-packages",
+  "evals": [
+    {
+      "id": 0,
+      "prompt": "Can you tell me the latest Koji build for the Python package 'requests'?",
+      "expected_output": "Should convert 'requests' to RPM candidate names via the name conversion script, query koji latest-build for each candidate across supported Fedora releases, and return the first candidate found",
+      "files": []
+    },
+    {
+      "id": 1,
+      "prompt": "I need to find the latest koji build for Django. Which Fedora releases have it built?",
+      "expected_output": "Should use the Django special case, output python-django6 and python-django5 as candidates, query koji for each across Fedora releases, and return the first candidate found (python-django5, since python-django6 only exists in f44)",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "What's the latest Koji build for the package 'flask>=2.0'?",
+      "expected_output": "Should parse the requirement 'flask>=2.0', extract name 'flask', run name conversion to generate candidates (python-flask, python3-flask), query koji for each across Fedora releases, and return the first candidate found",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Find the latest Fedora koji build for 'click; python_version >= \"3.8\"'",
+      "expected_output": "Should parse the requirement with marker, extract name 'click', run name conversion to generate candidates (python-click, python3-click), query koji for each across Fedora releases, and return the first candidate found",
+      "files": []
+    }
+  ]
+}

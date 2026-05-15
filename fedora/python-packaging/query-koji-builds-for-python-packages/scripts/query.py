@@ -15,17 +15,18 @@ def convert_name(pypi_name: str) -> list[str]:
 
     if name.lower() == "django":
         majors = (6, 5)
-        candidates = [f"python-django{m}" for m in majors]
-    elif name.lower() == "pyyaml":
-        candidates = ["PyYAML"]
-    else:
-        candidates = [
-            "python-" + name,
-            "python3-" + name,
-            "python-" + name.removeprefix("py"),
-        ]
+        return [f"python-django{m}" for m in majors]
 
-    return candidates
+    if name.lower() == "pyyaml":
+        return ["PyYAML"]
+
+    return [
+        "python-" + name,
+        "python3-" + name,
+        # This is for PyJWT particularly.
+        # It is okay to generate a duplicate name e.g. python-requests. The first one above will win.
+        "python-" + name.lower().removeprefix("py"),
+    ]
 
 
 def main():

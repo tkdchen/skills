@@ -1,6 +1,6 @@
 ---
-name: getting-koji-builds-for-python-packages
-description: Use when ask to get the latest RPM build for a Python package from koji.
+name: query-koji-builds-for-python-packages
+description: Use when ask to get/query the latest RPM package/build for a Python package.
 ---
 
 # Overview
@@ -21,12 +21,12 @@ Run `scripts/query.py`:
 python scripts/query.py <pypi-name> --releases f41 f42
 ```
 
-It converts the PyPI name to RPM candidate names, queries Koji for each across
-the specified Fedora releases, and returns the first candidate found in all
-releases.
-
 - `<pypi-name>` (positional, required): Python package name.
 - `--releases` / `-r` **(required)**: Fedora releases to query (e.g. `-r f41 f42`).
+
+Found build information is output to stdout. Any other text like logging is output to stderr.
+
+If no build is found, stdout is empty.
 
 ## Name conversion rules
 
