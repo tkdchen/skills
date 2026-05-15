@@ -1,0 +1,47 @@
+{
+  "skill_name": "fedora-releases",
+  "evals": [
+    {
+      "id": 0,
+      "prompt": "What are the current Fedora releases?",
+      "expected_output": "Should respond with releases 44, 43 and 42 as current. Mention 45 as rawhide. Include abbreviations f45, f44, f43, f42.",
+      "files": []
+    },
+    {
+      "id": 1,
+      "prompt": "What are the abbreviations for the current Fedora releases?",
+      "expected_output": "Should respond with f45, f44, f43, f42.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Is Fedora 44 a current release?",
+      "expected_output": "Should confirm Fedora 44 is a current release.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Is Fedora 42 a current release?",
+      "expected_output": "Should confirm Fedora 42 is a current release, and note it is going to be EOL on 2026-05-27.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "Is Fedora 45 released yet?",
+      "expected_output": "Should respond that 45 is rawhide (the development branch), not a stable release.",
+      "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "When does Fedora 42 go end of life?",
+      "expected_output": "Should respond that Fedora 42 is going to be EOL on 2026-05-27.",
+      "files": []
+    },
+    {
+      "id": 6,
+      "prompt": "What are the currently supported Fedora Linux versions? Give me the reference link too.",
+      "expected_output": "Should list releases 44, 43 and 42 as current, 45 as rawhide, and include the reference link https://docs.fedoraproject.org/en-US/releases/lifecycle/#_maintenance_schedule.",
+      "files": []
+    }
+  ]
+}

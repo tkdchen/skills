@@ -1,16 +1,18 @@
 ---
 name: fedora-releases
-description: Use when asked to get the current Fedora releases
+description: Use when asked what current Fedora releases are
 ---
 
-# Getting current Fedora releases
+# Overview
 
-Run command:
+Current releases are 44, 43 and 42.
 
-```bash
-curl -L https://fedoraproject.org/releases.json | jq -r '.[].version' | sort -r | uniq
-```
+45 is the rawhide, i.e. the development branch.
+
+Abbrev: `f45`, `f44`, `f43`, `f42`.
+
+Note: 42 is going to be EOL on 2026-05-27.
 
 # References
 
-- https://docs.fedoraproject.org/en-US/releases/#_current_supported_releases
+- [Maintenance Schedule](https://docs.fedoraproject.org/en-US/releases/lifecycle/#_maintenance_schedule)
