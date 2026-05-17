@@ -1,0 +1,35 @@
+{
+  "skill_name": "check-dependencies-match",
+  "evals": [
+    {
+      "id": 0,
+      "prompt": "Can requests 2.32.0 be built on Fedora 43 and 44?",
+      "expected_output": "Should use fedora-releases to confirm current releases, then list-python-package-dependencies to get dependencies of requests 2.32.0, exclude meta/testing extras like 'all', 'dev', 'testing', but keep 'pytest', then use query-koji-builds-for-python-packages for each dependency across f43, f44, rawhide (excluding EOL releases if any), generate a table with columns: PyPI package name, dependency specifier, f43, f44, rawhide. Should ask whether to try next version.",
+      "files": []
+    },
+    {
+      "id": 1,
+      "prompt": "Check if Flask 3.0 has its dependencies available in current Fedora releases.",
+      "expected_output": "Should use fedora-releases to determine current releases (f44, f43, f42), exclude f42 (going EOL). Use list-python-package-dependencies for Flask 3.0, exclude meta extras, then query-koji-builds-for-python-packages for each dependency across f44, f43, rawhide. Generate table report with PyPI name, specifier, and per-release columns. Should ask whether to try next version.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Can upstream Django 5.2 be built on Fedora? Check its dependencies.",
+      "expected_output": "Should list dependencies of Django 5.2 via list-python-package-dependencies, exclude meta/testing extras but keep pytest-type packages. Query koji builds via query-koji-builds-for-python-packages for current non-EOL Fedora releases plus rawhide (determined via fedora-releases). Generate a table showing PyPI name, specifier, and each release column (e.g. f43, f44, rawhide). Should ask whether to try next version.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "I want to package numpy 2.2. Check if its dependencies are in Fedora.",
+      "expected_output": "Should follow the workflow: get current releases from fedora-releases (excluding EOL), get numpy 2.2 dependencies via list-python-package-dependencies, filter out meta/testing extras ('all', 'dev', 'devel', 'testing') but keep packages like pytest, query koji for each dependency via query-koji-builds-for-python-packages across supported releases plus rawhide, and present result as a table. Should ask whether to try next version.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "Check if the extras dependencies of pydantic 2.10 are available in Fedora.",
+      "expected_output": "Should use fedora-releases to determine current non-EOL releases plus rawhide. Include extras dependencies (not just standard ones) when calling list-python-package-dependencies, but exclude meta/testing extras ('all', 'all...', 'dev', 'devel', 'testing'). Keep 'pytest', 'responses' type packages. Query koji for each dependency via query-koji-builds-for-python-packages against current non-EOL releases plus rawhide. Generate a table with PyPI name, dependency specifier, and one column per release.",
+      "files": []
+    }
+  ]
+}
